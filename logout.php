@@ -8,7 +8,14 @@
 </head>
 <body>
 <?php  require "partilas/nav.php"  ?>
+<?php
+session_start();
+session_unset();
+session_destroy();
+echo "<br> You Have Been log out";
+header("location: login.php");
 
+?>
     
 </body>
 </html>
