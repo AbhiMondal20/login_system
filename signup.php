@@ -1,6 +1,6 @@
 <?php
-$insert = false;
-$alerterror = false;
+$alert = false;
+$error = false;
 
 
 ?>
@@ -9,24 +9,30 @@ $alerterror = false;
 
 
 if($_SERVER["REQUEST_METHOD"] == 'POST'){
-    $err = "";
+  
     require  "connection.php";
     $username = $_POST['username'];
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
-    $exits = true;
+    $exits = false;
   if(($password == $cpassword) && $exits == false ){ 
 
-    $sql = "INSERT INTO `user` ( `username`, `password`, `d&t`) VALUES ('$username', '$password', current_timestamp())";
+    $sql = "INSERT INTO `user` ( `username`, `password`, `d&t`) VALUES ( '$username', '$password', current_timestamp())";
+
+
     $resullt = mysqli_query($conn, $sql);
     if($resullt){
-        $insert = true;    
-            }
-    else{
-          $alerterror = "error";
-        }
+        $alert = true;    
+
+             }
+             
+
+       }else{
+         $error = true;
+       }
+   
     
-    }
+    
 
 
 
@@ -53,20 +59,20 @@ if($_SERVER["REQUEST_METHOD"] == 'POST'){
 <body>
 <?php
   require "partilas/nav.php" ;
-  if($insert){
+  if($alert){
       echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Successfully!</strong> Your Login Successfully.
+      <strong>Successfull!</strong> You can login if you can want.
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
   }
+  if($error){
+    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Wrong!</strong> Your password could not match.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>';
+}
 
-  if($alerterror){
-    echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
-    <strong>Error</strong>.'$alerterror'
-    .
-    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-  </div>";
-  }
+ 
 ?>
 
 <div class="container my-4">
