@@ -5,45 +5,6 @@ $error = false;
 
 ?>
 
-<?php
-
-
-if($_SERVER["REQUEST_METHOD"] == 'POST'){
-  
-    require  "connection.php";
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $cpassword = $_POST['cpassword'];
-    $exits = false;
-  if(($password == $cpassword) && $exits == false ){ 
-
-    $sql = "INSERT INTO `user` ( `username`, `password`, `d&t`) VALUES ( '$username', '$password', current_timestamp())";
-
-
-    $resullt = mysqli_query($conn, $sql);
-    if($resullt){
-        $alert = true;    
-
-             }
-             
-
-       }else{
-         $error = true;
-       }
-   
-    
-    
-
-
-
-
-}
-
-
-
-
-
-?>
 
 
 
@@ -59,21 +20,55 @@ if($_SERVER["REQUEST_METHOD"] == 'POST'){
 <body>
 <?php
   require "partilas/nav.php" ;
-  if($alert){
-      echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Successfull!</strong> You can login if you can want.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>';
-  }
-  if($error){
+?>
+<?php
+
+
+if($_SERVER["REQUEST_METHOD"] == 'POST'){
+  
+    require  "connection.php";
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $cpassword = $_POST['cpassword'];
+    // $exits = false;
+
+  // check whether this username exists
+  $exitssql = "select * from `user` where username = '$username'";
+  $result = mysqli_query($conn, $exitssql);
+  $numexitsRows = mysqli_num_rows($result);
+  if($numexitsRows > 0){
+    // $exits = true;
     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Wrong!</strong> Your password could not match.
+    <strong>Wrong!</strong>  Username is Alreay Exists.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>';
-}
+  }
+  else{
+    // $exits = false;
 
- 
+
+
+          if(($password == $cpassword)){ 
+
+            $sql = "INSERT INTO `user` ( `username`, `password`, `d&t`) VALUES ( '$username', '$password', current_timestamp())";
+            $result = mysqli_query($conn, $sql);
+            if($result){
+              echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Successfull!</strong> You can login if you can want.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';   
+            }
+              }else{
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Wrong!</strong> password do not match.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>';
+            }
+              }
+  }
+
 ?>
+
 
 <div class="container my-4">
     <h2 class="text-center">Signup to our Website</h2>
