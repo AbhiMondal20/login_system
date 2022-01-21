@@ -18,6 +18,6 @@
  
  ?>
 
-    <h1 class="text-center my4">Wellcome to Wellcome</h1>
+    <h1 class="text-center my-4">Wellcome to Wellcome</h1>
 </body>
 </html>
